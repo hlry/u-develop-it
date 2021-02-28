@@ -19,8 +19,8 @@ const db = new sqlite3.Database('./db/election.db', err => {
 });
 
 // Get all candidates
-app.get('/api/candidates', (req, res) => {
-    const sql = `SELECT * FROM candidates`;
+app.get('/api/parties', (req, res) => {
+    const sql = `SELECT * FROM parties`;
     const params = [];
     db.all(sql, params, (err, rows) => {
         if (err) {
@@ -36,9 +36,8 @@ app.get('/api/candidates', (req, res) => {
 });
 
 // Get single candidate
-app.get('/api/candidate/:id', (req, res) => {
-    const sql = `SELECT * FROM candidates 
-                 WHERE id = ?`;
+app.get('/api/party/:id', (req, res) => {
+    const sql = `SELECT * FROM parties WHERE id = ?`;
     const params = [req.params.id];
     db.get(sql, params, (err, row) => {
         if (err) {
@@ -80,8 +79,8 @@ app.post('/api/candidate', ({ body }, res) => {
 });
 
 // Delete a candidate
-app.delete('/api/candidate/:id', (req, res) => {
-    const sql = `DELETE FROM candidates WHERE id = ?`;
+app.delete('/api/party/:id', (req, res) => {
+    const sql = `DELETE FROM parties WHERE id = ?`;
     const params = [req.params.id];
     db.run(sql, params, function (err, result) {
         if (err) {
@@ -89,10 +88,7 @@ app.delete('/api/candidate/:id', (req, res) => {
             return;
         }
 
-        res.json({
-            message: 'successfully deleted',
-            changes: this.changes
-        });
+        res.json({ message: 'successfully deleted', changes: this.changes });
     });
 });
 
